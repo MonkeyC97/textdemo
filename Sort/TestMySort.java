@@ -1,4 +1,4 @@
-package git.com;
+package git.com.Sort;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -106,18 +106,20 @@ public class TestMySort {
             while((low < high) && array[high] >= tmp){
                 high--;
             }
-            if(low > high){
+            if(low >= high){
                 break;
             }else{
                 array[low] = array[high];
+                low++;
             }
-            while((low < high) && array[high] <= tmp){
+            while((low < high) && array[low] <= tmp){
                 low++;
             }
             if(low >= high){
                 break;
             }else{
                 array[high] = array[low];
+                high--;
             }
 
         }
