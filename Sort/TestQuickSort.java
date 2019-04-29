@@ -7,7 +7,6 @@ import static git.com.Sort.TestMySort.quickSort;
 public class TestQuickSort {
 
 
-
     public static int partition(int[] arr, int low, int high) {
         //指定左指针i和右指针j
         int i = low;

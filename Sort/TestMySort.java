@@ -103,25 +103,22 @@ public class TestMySort {
         high = array.length-1;
 
         while(low < high){
-            while((low < high) && array[high] >= tmp){
+            while(low < high && array[high] > tmp){
                 high--;
             }
             if(low >= high){
                 break;
             }else{
                 array[low] = array[high];
-                low++;
             }
-            while((low < high) && array[low] <= tmp){
+            while(low < high && array[low] < tmp){
                 low++;
             }
             if(low >= high){
                 break;
             }else{
                 array[high] = array[low];
-                high--;
             }
-
         }
         array[low] = tmp;
         return low;
@@ -142,6 +139,28 @@ public class TestMySort {
         }
     }
 
+    public static void swap(int[] array,int start,int end){
+        int tmp = array[start];
+        array[start] = array[end];
+        array[end] = tmp;
+    }
+
+
+    public static void medianOfThree(int[] array,int low,int high){
+        int mid = (low + high) >>>1;
+        int tmp = array[mid];
+        if(array[mid] > array[low]){
+            swap(array,mid,low);
+        }
+        if(array[high] < array[high]){
+            swap(array,mid,high);
+        }
+        if(array[low] > array[high]){
+            swap(array,low,high);
+        }
+    }
+
+
     public static void quick(int[] array,int start,int end){
         //1 2 3 4 5
         if(end-start+1 <= 16){
@@ -161,7 +180,7 @@ public class TestMySort {
     }
 
 
-    public static void quickSort(int[] array){
+    public static void quickSort1(int[] array){
         long start = System.currentTimeMillis();
         quick(array,0,array.length-1);
         long end = System.currentTimeMillis();
@@ -169,14 +188,95 @@ public class TestMySort {
     }
 
 
-    public static void main(String[] args) {
-//        int[] array = {12,5,2,4,9,78,43,21};
-        Random random = new Random();
-        int[] array = new int[100000];
-        for (int i = 0; i < array.length; i++) {
-            array[i] = random.nextInt(10000)+1;
+    //非递归实现快速排序
+    public static void quickSort(int[] array){
+        int[] stack = new int[array.length * 2];
+        int top = 0;
+        int low = 0;
+        int high = array.length - 1;
+        //先进行一趟快速排序
+        int par = partion(array,low,high);
+        //1  判断当前par的左右两边是否有两个数据以上
+        if(par > low + 1){
+            stack[top++] = low;
+            stack[top++] = par - 1;
         }
-        quickSort(array);
+        if(par < high - 1){
+            stack[top++] = high;
+            stack[top++] = par + 1;
+        }
+        //以上代码执行完毕，两边的数对已经全部入栈
+        //需要做的工作就是判断栈是否为空，不为空，取出两个数对进行partition
+        while(low < high){
+            while(top > 0){
+                high = stack[--top];
+                low = stack[--top];
+                partion(array,low,high);
+                if(par > low + 1){
+                    stack[top++] = low;
+                    stack[top++] = par - 1;
+                }
+                if(par < high - 1){
+                    stack[top++] = high;
+                    stack[top++] = par + 1;
+                }
+            }
+        }
+    }
+
+    public static void merge(int[] array,int start,int mid,int end){
+        int[] tmp = new int[array.length];
+        int tmpIndex = start;
+
+        int start2 = mid + 1;
+        int i = start;
+        while(start <= mid && start2 <= end){
+            if(array[start] <= array[start2]){
+                tmp[start] = array[start];
+                start++;
+            }else{
+                tmp[start] = array[start2];
+                start2++;
+            }
+        }
+        while(start <= mid){
+            tmp[start] = array[start];
+            start++;
+        }
+        while(start2 <= end){
+            tmp[start] = array[start2];
+            start2++;
+        }
+        while(i <= end){
+            array[i] = tmp[i];
+            i++;
+        }
+        System.out.println(Arrays.toString(array));
+    }
+
+    public static void mergeSort(int[] array,int start,int end){
+        if(start >= end){
+            return;
+        }
+        int mid = (start + end) / 2;
+        mergeSort(array, start, mid);
+        mergeSort(array,mid + 1,end);
+        //肯定是一个一个的有序的序列
+
+        merge(array,start,mid,end);
+
+    }
+
+    public static void main(String[] args) {
+        int[] array = {12,5,2,4,9,78,43,21};
+//        Random random = new Random();
+//        int[] array = new int[100000];
+//        for (int i = 0; i < array.length; i++) {
+//            array[i] = random.nextInt(10000)+1;
+//        }
+//        quickSort(array);
+//        System.out.println(Arrays.toString(array));
+        mergeSort(array,0,array.length - 1);
         System.out.println(Arrays.toString(array));
     }
 }
