@@ -21,9 +21,11 @@ public class MySingleList implements ILinked {
 
 
     private Node head;
-    public Node getHead(){
+
+    public Node getHead() {
         return head;
     }
+
     private int size;
 
     public MySingleList() {
@@ -209,21 +211,21 @@ public class MySingleList implements ILinked {
 
     //反转一个单链表
     public Node reverseList() {
-        Node cur = this.head;
-        Node pre = null;
-        Node reverseHead = null;
-        while (cur != null) {
-            Node curNext = cur.next;
-            cur.next = null;
-            if (curNext == null) {
-                reverseHead = cur;
-            } else {
-                cur.next = pre;
-                pre = cur;
-                cur = curNext;
-            }
-        }
-        return reverseHead;
+       Node cur = this.head;
+       Node pre = null;
+       Node reverseHead = null;
+       while(cur != null){
+           Node curNext = cur.next;
+           cur.next = null;
+           if(curNext == null){
+               reverseHead = cur;
+           }else{
+               cur.next = pre;
+               pre = cur;
+               cur = curNext;
+           }
+       }
+       return reverseHead;
     }
 
 
@@ -237,19 +239,17 @@ public class MySingleList implements ILinked {
 
     //找到一个单链表中间的中间节点，如果有两个，返回后者。
     public Node middleNode(Node head) {
-        Node cur1 = head;
-        Node cur2 = head;
-        if (head == null && head.next == null) {
-            return head;
+        Node cur = this.head;
+        int count = 0;
+        while(cur != null){
+            cur = cur.next;
+            count++;
         }
-        while (cur2.next != null || cur2.next.next != null) {
-            cur1 = cur1.next;
-            cur2 = cur2.next.next;
+        Node pre = this.head;
+        for (int i = 0; i < count/2 ; i++) {
+            pre = pre.next;
         }
-        if (cur2.next != null) {
-            cur1 = cur1.next;
-        }
-        return cur1;
+        return pre;
     }
 
     //返回倒数第k个节点
@@ -310,25 +310,27 @@ public class MySingleList implements ILinked {
         Node pHead = this.head;
         Node node = new Node(x);
         while (pHead != null) {
+            Node pHeadNext = pHead.next;
+            pHead.next = null;
             if (pHead.data < x) {
                 if (beforeStart == null) {
-                    beforeStart = pHead;
-                    beforeEnd = pHead;
-                } else {
-                    pHead.next = beforeEnd;
                     beforeStart.next = pHead;
+                    beforeEnd = beforeStart;
+                } else {
+                    beforeEnd.next = pHead;
+                    beforeEnd = pHead;
                 }
             } else {
                 if (afterStart == null) {
-                    afterStart = pHead;
-                    afterEnd = pHead;
-                } else {
-                    pHead.next = beforeEnd;
                     afterStart.next = pHead;
+                    afterEnd = afterStart;
+                } else {
+                    afterEnd.next = pHead;
+                    afterEnd = pHead;
                 }
 
             }
-
+            pHead = pHeadNext;
         }
         return null;
     }
@@ -336,103 +338,99 @@ public class MySingleList implements ILinked {
 
     //创造一个环
     public void createCycle() {
-        Node cur = this.head;
-        while (cur != null) {
-            cur = cur.next;
-        }
-        cur = cur.next.next.next;
-    }
-    //判断是否有环
-    public boolean hasCycle() {
-        Node fast = this.head;
-        Node slow = this.head;
-        while (fast != null && fast.next != null) {
-            fast = fast.next.next;
-            slow = slow.next;
-            if (fast == slow) {
-                return true;
-            }
-        }
-        return false;
+       Node cur = this.head;
+       while(cur != null){
+           cur = cur.next;
+       }
+       cur = cur.next.next.next;
     }
 
-//给定一个链表，返回链表开始入环的第一个节点。 如果链表无环，则返回 NULL
+    //判断是否有环
+    public boolean hasCycle() {
+       Node fast = this.head;
+       Node slow = this.head;
+       while(fast != null && fast.next != null){
+           fast = fast.next.next;
+           slow = slow.next;
+           if(slow == fast){
+               return true;
+          }
+       }
+       return false;
+    }
+
+    //给定一个链表，返回链表开始入环的第一个节点。 如果链表无环，则返回 NULL
     public Node detectCycle(Node node) {
-        Node fast = this.head;
-        Node slow = this.head;
-        while (fast != null && fast.next != null) {
-            fast = fast.next.next;
-            slow = slow.next;
-            if(fast == slow){
-                break;
-            }
-        }
-        if(fast == null && fast.next ==null){
-            return null;
-        }
-        slow = this.head;
-        while(slow != fast){
-            fast = fast.next;
-            slow = slow.next;
-        }
-        return fast;
+       Node fast = this.head;
+       Node slow = this.head;
+       while(fast != null && fast.next != null){
+           fast = fast.next.next;
+           slow = slow.next;
+           if(fast == slow){
+               return null;
+           }
+           slow = this.head;
+           while(slow != fast){
+               slow = slow.next;
+               fast = fast.next;
+           }
+       }
+       return slow;
     }
 
     //在一个排序的链表中，存在重复的结点，请删除该链表中重复的结点，重复的结点不保留，返回链表头指针
-    public Node deleteDuplication(){
-     Node cur = this.head;
-     Node newHead = new Node(-1);
-     Node tempHead = newHead;
-     while(cur != null){
-         if(cur.next != null && cur.next.data == cur.data) {
-             while (cur.next != null && cur.next.data == cur.data) {
-                 cur = cur.next;
-             }
-             cur = cur.next;
-             newHead.next = cur.next;
-         }
-             else{
-                 newHead.next = cur.next;
-                 cur = cur.next;
-             }
+    public Node deleteDuplication() {
+       Node cur = this.head;
+       Node newHead = new Node(-1);
+       Node tmpHead = newHead;
+       while(cur != null){
+           if(cur.next != null && cur.next.data == cur.data){
+               while(cur.next != null && cur.next.data == cur.data){
+                   cur = cur.next;
+               }
+               cur = cur.next;
+               newHead.next = cur;
+           }else{
+               newHead.next = cur;
+               newHead = cur;
+               cur = cur.next;
+           }
+       }
+       return tmpHead;
+    }
 
-         }
-        return tempHead;
-     }
 
-    
     //回文结构
     public boolean chkPalindrome() {
-        if(this.head == null) {
+        if(this.head == null){
             return false;
-        }else if(this.head.next == null) {
+        }
+        if(this.head.next == null){
             return true;
         }
         Node fast = this.head;
         Node slow = this.head;
-        while(fast != null && fast.next!= null) {
+        while(fast != null && fast.next != null){
             fast = fast.next.next;
             slow = slow.next;
         }
         Node p = slow.next;
         Node pNext = p.next;
-        while(p != null) {
+        while(p != null){
             p.next = slow;
             slow = p;
-            p = pNext;
-            if(p != null) {
+            p = p.next;
+            if(p != null){
                 pNext = p.next;
             }
-        }
-        while(head != slow) {
-            if(head.data != slow.data) {
-                return false;
+            while(head != slow){
+                if(head.data != slow.data){
+                    return false;
+                }
+                if(head.next == slow){
+                    return true;
+                }
             }
-            if(head.next == slow) {
-                return true;
-            }
-            head = head.next;
-            slow = slow.next;
         }
         return true;
     }
