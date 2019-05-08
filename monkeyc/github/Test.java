@@ -6,5 +6,4 @@ public class Test {
         System.out.println(MyMath.add(1,2));
         System.out.println(MyMath.sub(3,2));
     }
-
 }
