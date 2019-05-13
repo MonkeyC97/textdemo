@@ -80,7 +80,7 @@ public class Test {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main9(String[] args) {
         int i = 10;
         int j = -1;
         if(i > 0){
@@ -90,4 +90,90 @@ public class Test {
             System.out.println(i);
         }
     }
+
+    public static void main10(String[] args) {
+        int moneyType;
+        System.out.println("请输入币种：1人民币 2美元 3越南盾");
+        Scanner scanner = new Scanner(System.in);
+        moneyType = scanner.nextInt();
+        switch (moneyType){
+            case 1:
+                System.out.println("人民币");
+
+            case 2:
+                System.out.println("美元");
+
+            case 3:
+                System.out.println("越南盾");
+
+
+                default: //默认值
+                     System.out.println("人民币");
+                 break;
+        }
+    }
+    //10的阶乘
+    public static void main11(String[] args) {
+        int i = 1;
+        int result = 1;
+        for(;i < 11;i++){
+            result *= i;
+        }
+        System.out.println("10的阶乘是："+result);
+    }
+
+    //乘法口诀
+    public static void main12(String[] args) {
+
+        for(int i = 1;i <= 9;i++){
+
+            for(int j = 1;j <= i; j++){
+                System.out.print( j+"x"+i+ "="+ i * j+"\t");
+            }
+            System.out.println();
+        }
+    }
+    //10个斐波那契数
+    public static void main13(String[] args) {
+        int[] str = new int[10];
+
+        int i = 2;
+        System.out.println(str[0] = 1);
+        System.out.println(str[1] = 1);
+        for(; i < str.length;i++){
+
+            str[i] = str[i - 1] + str[i - 2];
+            System.out.println(str[i]);
+        }
+    }
+        //求 1-100之间所有整数的和
+    public static void main14(String[] args) {
+        int result = 0;
+        int i = 1;
+        while(i <= 100){
+            result += i;
+            i++;
+        }
+        System.out.println(result);
+    }
+
+    public static void main15(String[] args) {
+        for(int i = 0; i < 5 ;i++){
+            for(int j = i; j < 5;j++){
+                System.out.print("$");
+            }
+            System.out.print("&");
+        }
+    }
+
+    public static void main(String[] args) {
+        for(int a = 0; a < 10; a++){
+            System.out.print(a);
+            if(a % 2 == 0){
+                continue;
+            }
+            System.out.println("$");
+        }
+    }
 }
+

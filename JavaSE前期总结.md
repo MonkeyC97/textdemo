@@ -928,28 +928,323 @@ System.out.println(b == c); //打印结果为flase
 
     ##### 2. switch开关语句
 
-    
+    ​	switch(表达式)
 
-    
+    ​		{
 
-    
+    ​			case  常量1：
 
-    
+    ​				多个语句;
 
-    
+    ​					break;
 
-    
+    ​			case 常量2:
 
-    
+    ​				多个语句;
 
-    
+    ​			case 常量3：
 
-    
+    ​				多个语句;
 
-    
+    ​			[default: 多个语句;]
 
-    
+    ​        }
 
+    ```java
+      public static void main(String[] args) {
+            int moneyType;
+            System.out.println("请输入币种：1人民币 2美元 3越南盾");
+            Scanner scanner = new Scanner(System.in);
+            moneyType = scanner.nextInt();
+            switch (moneyType){
+                case 1:
+                    System.out.println("人民币");
+                    break;
+                case 2:
+                    System.out.println("美元");
+                    break;
+                case 3:
+                    System.out.println("越南盾");
+                    break;
+    
+                    default: //默认值
+                         System.out.println("人民币");
+                         break;
+            }
+        }
+    //输入1输出人民币，输入2输出美元，输入3输出越南盾
+    ```
+    
+    值得注意的是如果case语句下没有写break关键字，那么程序会继续往下执行知道遇到break关键字或者到程序结束为止。
+    
+    ```java
+    	 public static void main(String[] args) {
+            int moneyType;
+            System.out.println("请输入币种：1人民币 2美元 3越南盾");
+            Scanner scanner = new Scanner(System.in);
+            moneyType = scanner.nextInt();
+            switch (moneyType){
+                case 1:
+                    System.out.println("人民币");
+    
+                case 2:
+                    System.out.println("美元");
+    
+                case 3:
+                    System.out.println("越南盾");
+    
+    
+                    default: //默认值
+                         System.out.println("人民币");
+                     break;    
+            }
+        }
+    //输入1输出人民币 美元 越南盾 人民币   如果去掉break之后的break，输出结果不变，因为此时程序结束。
+    ```
+    
+    ### 2.2.2 循环语句
+    
+    ​	Java语言中3种重要的循环结构包括for循环语句，while循环语句，do…while循环语句。
+    
+    
+    
+      1. for循环语句
+    
+         (1) for循环语句的格式
+    
+         ```java
+         for(表达式1;表达式2;表达式3;)
+           
+         			{
+         				语句组;  //也称为循环体
+               }
+         ```
+    
+         > 表达式1: 对变量初始化，只执行一次。
+    
+         > 表达式2: 条件表达式，当表达式2为真时，继续执行循环体。
+    
+         > 表达式3: 调整表达式2中的变量值，以便改变表达式2的值。
+    
+         >语句组：称为循环体。
+    
+         (2) for循环执行的过程
+    
+         ​	首先计算表达式1，完成变量初始化。再测试表达式2的值，若表达式2的值为true，则执行循环体。执行完循环体之后紧接着计算表达式3，一次循环结束，然后下次又从计算表达式2开始，若表达式2的值仍为true则继续执行语句组，否则跳出整个for循环，执行for语句后面的语句。
+    
+         
+    
+         (3) 另外两种结构
+    
+         ```java
+         表达式1;
+         for(;条件表达式;表达式2)
+         {
+           循环体;
+         }
+         ```
+    
+         
+    
+         ```java
+         表达式1;
+         for(;条件表达式;)
+         {
+           语句块;
+           表达式2;
+         }
+         ```
+    
+    
+    
+    ​		例如：
+    
+    ```java
+    public static void main11(String[] args) {//计算10的阶乘
+            int i = 1;//此时的整型变量i是在for循环体外定义的，也可以在for循环体内声明，此时i的作用域为整个类
+            int result = 1;
+            for(;i < 11;i++){
+                result *= i;
+            }
+            System.out.println("10的阶乘是："+result);
+        }//打印结果为10的阶乘是3628800
+    
+    ```
+    
+    ```java
+       public static void main12(String[] args) {//打印乘法口诀
+            for(int i = 1;i <= 9;i++){//for循环的嵌套
+                for(int j = 1;j <= i; j++){
+                    System.out.print( j+"x"+i+ "="+ i * j+"\t");
+                }
+                System.out.println();
+            }
+        }
+    ```
+    
+    
+    
+    ```java
+      //10个斐波那契数
+        public static void main(String[] args) {
+            int[] str = new int[10];
+            System.out.println(str[0] = 1);
+            System.out.println(str[1] = 1);
+           	int i = 2;
+            for(; i < str.length;i++){
+    
+                str[i] = str[i - 1] + str[i - 2];
+                System.out.println(str[i]);
+            }
+        }
+    ```
+    
+    
+    
+    
+    
+    2.while语句
+    
+    ```java
+    while(条件表达式)
+    {
+      语句块;
+    }
+    ```
+    
+     while为关键字，条件表达式的值为布尔值，为真时才执行循环体中的语句，否则不执行。
+    
+    例如：
+    
+    ```java
+    //求1到100之间所有整数只和
+    public static void main(String[] args){
+      int result = 0;
+      int i = 1;
+      while(i >= 1 && i <= 100){
+        result = result + i;
+        i++;
+      }
+      System.out.println(result);
+    }//结果为5050
+    ```
+    
+    
+    
+    3. do…while语句
+    
+    do … while 语句可以实现循环，与以上两种循环不同的特点是，先执行一遍循环体然后再判断条件是否满足。
+    
+    ```java
+    do
+    {
+      语句块;
+    }while(条件表达式);
+    ```
+    
+    do 和 while 是关键字。语句块是即将实现的内容。条件表达式可以是关系表达式、逻辑表达式、布尔值、方法等。条件表达式的值为布尔值
+    
+    
+    
+    4. 循环语句嵌套
+    
+       ```java
+       for(表达式1;条件表达式1;表达式2){
+         for(表达式3;条件表达式2;表达式3){
+           语句块;
+         }
+       }
+       ```
+    
+       ```java
+       while(条件表达式1){
+         while(条件表达式2)
+       }
+       ```
+    
+       ```java
+        for(表达式1;条件表达式2;表达式2){
+       
+          	while(条件表达式2)
+       
+          				{
+              					语句块;
+          	      }
+       
+          }
+       
+       
+       ```
+    
+       例如：
+    
+       ```java
+       public static void main(String[] args) {
+               for(int i = 0; i < 5 ;i++){
+                   for(int j = i; j < 5;j++){
+                       System.out.print("$");
+                   }
+                   System.out.print("&");
+               }
+           }//打印结果为$ $ $ $ $ & $ $ $ $ & $ $ $ & $ $ & $ & &
+       ```
+    
+       
+    
+       5.跳转语句
+    
+       ​	(1) break
+    
+       ​			break用于结束整个循环，如果是嵌套的多层循环，那么用于结束当前层次的循环。
+    
+       ​			switch语句中，case语句结束之后如果没有加break关键字那么程序会继续往下执行，直到程序结束或者遇到break关键字。
+    
+       
+    
+       ​	(2) continue
+    
+       ​			continue 跳转语句的作用是强制一个循环体前返回也就是让循环继续执行，但不执行本次循环剩余的循环体中的语句。
+    
+       ```java
+       public static void main(String[] args) {
+               for(int a = 0; a < 10; a++){
+                   System.out.print(a);
+                   if(a % 2 == 0){
+                       continue;
+                   }
+                   System.out.println("$");
+               }
+           }
+       /* 打印结果为 01$ 
+       						23$
+       						45$
+       						67$
+       						89$
+       */
+       ```
+    
+       
+    
+       分析：从for循环开始，a = 0，先打印 0，然后通过if语句判断 0 % 2 == 0 为真，所以执行continue语句，使循环体之后的语句不执行直接进入下一次循环，然后打印1，此时 1 % 2 == 0 为假，continue不执行，打印$，打印结果就如此可见了。
+    
+       
+    
+       ​	(3) return 
+    
+       ​		可以使用return语句返回一个值，并把控制权交给调用它的语句。在java程序中使用return语句的语法如下：
+    
+       ```java
+       return [表达式];//其中表达式是可选参数，表示要返回的值，他的数据类型必须与方法声明中的返回值类型一致，这可以通过强制类型转换来实现	
+       ```
+    
+       
+    
+       # 3. 数组
+    
+       
+    
+    
+    
     
 
 
