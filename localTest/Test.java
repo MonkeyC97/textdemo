@@ -1,6 +1,21 @@
 package localTest;
 
 import java.util.Scanner;
+class Person{
+    String name;
+    int age;
+    String sex;
+    public Person(){
+        this.name = "houchang";
+        this.age = 27;
+        this.sex = "男";
+    }
+    public Person(String name,int age,String sex){
+        this.name = name;
+        this.age = age;
+        this.sex = sex;
+    }
+}
 
 public class Test {
     public static void main1(String[] args) {
@@ -166,7 +181,7 @@ public class Test {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main16(String[] args) {
         for(int a = 0; a < 10; a++){
             System.out.print(a);
             if(a % 2 == 0){
@@ -175,5 +190,147 @@ public class Test {
             System.out.println("$");
         }
     }
+
+
+    public static void main17(String[] args) {
+        int i = 8;
+        int j = 3;
+        int k = max(i,j);
+        System.out.println("i和j中"+k+"是较大值");
+    }
+    public static void main18(String[] args) {
+        int num1 = 6;
+        int num2 = 8;
+        System.out.println("在调用swap之前，num1 ="+num1+"  num2="+num2);
+        swap(num1,num2);
+        System.out.println();
+        System.out.println("在调用swap之后，num1 ="+num1+"  num2="+num2);
+    }
+    public static void main19(String[] args) {
+        System.out.println(max(3,4));
+        System.out.println(max(3.0,4.0));
+        System.out.println(max(3.5,4.7,5.9));
+    }
+
+    public static int max(int num1,int num2){
+        if(num1 > num2){
+            return num1;
+        }else{
+            return num2;
+        }
+    }
+    public static double max(double num1,double num2){
+        if(num1 > num2){
+            return num1;
+        }else{
+            return num2;
+        }
+    }
+    public static double max(double num1,double num2,double num3){
+         return max(max(num1,num2),num3);
+    }
+
+    public static void swap(int n1,int n2){
+        System.out.println("在调用swap之前n1 = " + n1 + "  n2=" + n2);
+        //下面是交换变量n1，n2的实现过程
+        int temp = n1;
+        n1 = n2;
+        n2 = temp;
+        System.out.println("在调用swap之后n1 = "+n1+"  n2="+n2);
+    }
+
+
+    //例：计算十个随机数的平均值及十个随机数的平方和。
+    public static void main20(String[] args) {
+        int num = 0;//保存一个随机数
+        double sum = 0;//保存随机数的和
+        double squresum = 0;//保存随机数的平方和
+        for(int i = 0; i <= 10;i++){
+            num = (int) Math.round(Math.random()*1000);//生成随机数num
+            System.out.println(num);
+
+            //对随机数进行求和
+            sum = sum + num;
+            //对随机数的和求平方和
+            squresum = squresum + Math.pow(num,2);
+        }
+        //对随机数的和求平均值
+        double mean = sum / 10;
+        System.out.println("随机数的平均值为："+ mean);
+        System.out.println("随机数的平方和为："+ squresum);
+    }
+
+    public static void main21(String[] args) {
+        System.out.println("请输入一个正整数：");//提示用户输入一个正整数
+        Scanner scanner = new Scanner(System.in);
+        int n = scanner.nextInt();
+        System.out.println("n的阶乘为："+factorial(n));
+    }
+    static long factorial(int n){
+        if(n == 0){
+            return 1;
+        }else{
+            return n * factorial(n - 1);
+        }
+    }
+
+    public static void main22(String[] args) {
+        System.out.println("请输入一个正整数：");
+        Scanner scanner = new Scanner(System.in);
+        int n = scanner.nextInt();
+        System.out.println("第n个斐波那契数对应的值是："+ fib(n));
+    }
+
+    public static long fib(int n){
+        if(n == 1 || n ==0){
+            return 1;//停止递归调用
+        }else{
+            return fib(n - 1) + fib(n - 2);
+        }
+    }
+
+
+
+    enum Color{
+        RED,GREEN,BlUE;
+    }
+
+    public static void main23(String[] args) {
+        System.out.println(Color.BlUE.name() + Color.BlUE.ordinal());
+    }
+
+    public static void main24(String[] args) {
+        Person person = new Person("monkeyc",22,"男");
+        System.out.println(person.sex);
+        System.out.println(person.name);
+        System.out.println(person.age);
+    }
+
+    public static void main25(String[] args) {
+        {
+            int x = 10;
+            System.out.println(x);
+        }
+        int x =100;
+        System.out.println(x);
+    }
+    static class Houchang{
+        {
+            System.out.println("构造代码块");
+        }
+        public Houchang(){
+            System.out.println("构造方法");
+        }
+    }
+
+    public static void main(String[] args) {
+        new Houchang();
+        new Houchang();
+    }
+
+
+
+
+
 }
 
