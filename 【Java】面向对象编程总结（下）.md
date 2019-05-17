@@ -288,52 +288,432 @@ public class TestExtends{
 
 ​	通过6.1继承节里面，得出当子类中定义了和父类中同名的成员变量和成员方法时，父类的成员变量和成员方法不能被子类所继承下来，此时称为子类隐藏了父类的成员变量和成员方法，如果要在子类中使用被隐藏的父类成员，或者使用父类中的构造方法，就必须在子类中使用关键字 ```super```。
 
+​	调用父类成员方法
+
 ```java
-//调用父类成员
-class Circlee{
-     float r = 5;
-     public Circlee(float r){
-         this.r = r;
-     }
-     public double getArea(float r){//圆面积
-         return r * r * Math.PI;
-     }
-     public double getLong(){//圆周长
-         return 2 * r * Math.PI;
-     }
-}
-class Cylinder extends Circlee{//子类Cylinder(圆柱)
-    float h = 8;
-
-    public Cylinder(float r,float h){
-        super(r);//调用父类构造方法，初始化父类成员变量r
-        this.h = h;
-    }
-    public double getArea(){
-        double d_area;//保存两个圆的面积
-        double c_area;//保存圆柱侧面积
-        d_area = 2 * super.getArea(r);//俩低圆面积
-        c_area = super.getLong() * h;//圆柱侧面面积
-        return d_area+c_area;
-    }
-
-    @Override
-    public double getLong() {
-        return 2 * 2 * r * Math.PI;
+class Car {
+    public void print(){
+        System.out.println("我是汽车");
     }
 }
-public class SuperDemo{
+class Suv extends Car{
+    public void print(){
+        super. print();
+        System.out.println("我是路虎揽胜");
+    }
+}
+public class CarTest{
     public static void main(String[] args) {
-        Cylinder cylinder = new Cylinder(5,20);
-        System.out.println(cylinder.getArea());
-        System.out.println(cylinder.getLong());
+        Suv suv = new Suv();
+        suv.print();
     }
-}
-//打印结果785.3981633974483
-
+}//打印结果 我是汽车 我是路虎揽胜
 ```
 
-例如
+​	子类的成员变量隐藏了父类中同名的成员变量。通过super使用父类中被隐藏的成员变量。例如：
+
+```java
+class Person2{
+    public int a = 10;//在子类中被隐藏的变量
+    
+}
+class Student2 extends  Person2{
+    public int a = 20;//在子类中定义了和父类中同名的变量
+    public int  print(){
+        return super.a+10;
+    }
+}
+public class TestExtends{
+    public static void main(String[] args) {
+        Student2 student2 = new Student2();
+        System.out.println(student2.print());
+    }
+}//打印结果20
+```
+
+
+
+## 6.3 final关键字
+
+1.final关键字可以用来修饰类、变量、方法
+
+2.final关键字修饰的类不能被继承，即不能拥有子类
+
+3.用final关键字修饰的方法不能被重写
+
+4.final一旦修饰⼀个类之后，该类的所有方法默认都会加上final修饰(不包含成员变量)
+
+
+
+```java
+final class ClassName{
+		float fun()//此时这个fun方法已经被final所修饰
+}
+```
+
+
+
+5.使用final定义的变量就成为了常量，并且不能被修改
+
+
+
+```java
+public final int A = 100;
+public final int A_MAX = 1000;//被final修饰的变量不能被再次赋值，并且用大写字母中间用_隔开
+```
+
+
+
+6.Java提供的String类被定义为final类，不能被轻易修改
+
+
+
+## 6.4重载(overload)和覆盖(override)
+
+##### 1.重载的概念
+
+​	在同一个类中有许多方法，它们的方法名相同，参数列表(参数个数，参数类型至少有一个不同)，方法的返回值不做要求，方法之间的这种现象被称为重载。例如：
+
+```java
+public void print(int r)
+public void print(double r)//参数类型不同方法重载
+```
+
+```java
+public void print(int r)
+public void print(double r,int h)//参数类型不同并且参数个数不同的方法重载
+```
+
+又如：
+
+```java
+public void methodA()
+public int methodA(){
+	return 0;
+}//这种不叫方法重载因为它们俩只是方法的返回值不同,并且在编译时会出错
+```
+
+又如:
+
+```java
+public void methodB()
+public String methodB(String n){
+  return n;
+}//正确的方法重载，由此可见，方法重载时候方法的返回值可以不同
+```
+
+##### 2.覆盖的概念
+
+方法的覆盖是子类和父类有同名且参数列表完全相同且返回值完全相同的方法，只是方法体不同，这种现象被称为覆盖。例如：
+
+```java
+class Student{
+    protected String no;
+    protected void print(){
+        System.out.println("学号为："+no);
+    }
+}
+
+class Granduate extends Student{
+    String dept;
+    public void print(){//方法的覆盖
+        super.print();//使用super关键字调用父类中的方法
+        System.out.println("专业为："+dept);
+    }
+}
+
+public class TestOverride {
+    public static void main(String[] args) {
+        Student student = new Student();
+        Granduate granduate = new Granduate();
+        student.no = "41603050213";
+        student.print();//父类对象调用父类中的方法
+        System.out.println("-------------------");
+        granduate.no = "41603050214";
+        granduate.dept = "计算机科学与技术";
+        granduate.print();//子类对象调用子类中的方法
+    }
+}
+//打印结果为
+/*
+
+学号为：41603050213
+-------------------
+学号为：41603050214
+专业为：计算机科学与技术
+
+*/
+```
+
+由代码可知，根据该方法的对象所属的类决定调用哪个方法
+
+覆盖之后的子类中的方法不能拥有比父类更加严格的访问权限，例如：
+
+```java
+//错误代码
+class Student{
+    protected String no;
+    public void print(){
+        System.out.println("学号为："+no);
+    }
+}
+
+class Granduate extends Student{
+    String dept;
+     protected void print(){//方法的覆盖，此时子类中的方法修饰符权限是小于父类中的public的，编译出错
+        super.print();//使用super关键字调用父类中的方法
+        System.out.println("专业为："+dept);
+    }
+}
+```
+
+问题来了，当父类中的方法被private所修饰，子类中覆盖的方法被public修饰，算正确覆盖方法吗？
+
+```java
+class Student{
+    protected String no;
+  
+  //如果现在⽗类⽅法使用了private定义，那么就表示该⽅法只能被父类使用，子类无法使用。换言之，子类根本就不知道⽗类有这样的方法。
+    private void print(){
+        System.out.println("学号为："+no);
+    }
+}
+
+class Granduate extends Student{
+    String dept;
+     public void print(){//子类中的方法是新定义的方法和父类的方法没有任何关系
+        System.out.println("专业为："+dept);
+    }
+}
+```
+
+##### 3.重载和覆盖的区别
+
+|   No | 区别 | 重载(overload)             | 覆盖(override)                                               |
+| ---: | :--: | -------------------------- | ------------------------------------------------------------ |
+|    1 | 概念 | 方法名称相同，参数列表不同 | 方法名、参数列表、返回值类型相同                             |
+|    2 | 范围 | 一个类之间                 | 继承关系父子类                                               |
+|    3 | 限制 | 没有权限限制               | 子类中覆盖父类之后的方法不能拥有比父类中被覆盖的方法更严格的访问控制权限 |
+
+
+
+## 6.5 多态
+
+
+
+##### 1.多态的概念
+
+对于Java语言来说，在同一类中或者不同类中，可以定义多个同名的方法，但是每个方法体中的代码却不同，这样系统会根据调用方法的对象或参数自动选择一个方法执行，向不同的对象发送相同的消息时，它们执行的方式就不同，我们称这种现象为多态。
+
+##### 2.Java程序实现多态的步骤
+
+（1）首先，在父类中声明一组方法
+
+（2）其次，在各子类中对父类的同一方法进行覆盖和重写
+
+##### 3.多态的表现
+
+​	方法的多态：
+
+​	（1）方法的重载：程序根据方法参数列表的不同去决定调用哪一个方法。
+
+​	（2）方法的覆盖：同⼀个父类的方法，可能根据实例化子类的不同也有不同的实现。
+
+​	对象的多态：
+
+​		对于基本数据类型，在表达式计算或者赋值的时候存在数据类型转换；对于引用数据类型，也存在着数据类型转换。
+
+```java
+Person per = new Student();//向上转型
+```
+
+```java
+Student stu = (Student) per;//向下转型
+```
+
+```java
+//向上转型
+class Person1{
+    public void print(){
+        System.out.println("人超类");
+    }
+}
+class Student3 extends Person1{
+    @Override
+    public void print() {
+        System.out.println("学生派生类");
+    }
+}
+public class TestDemo1{
+    public static void main(String[] args) {
+        Person1 person1 = new Student3();//向上转型
+        person1.print();
+    }
+}//打印结果 学生派生类
+```
+
+​	由上述程序可知，不论是否发生向上转型，关键是看你使用了那个子类，而且通过向上转型之后调用的方法是否被子类覆盖了。
+
+```java
+/*
+向下转型
+ */
+
+class Person1{
+
+    public void print(){
+        System.out.println("父类方法");
+    }
+}
+
+class Student3 extends Person1{
+    @Override
+    public void print() {
+        System.out.println("子类覆盖方法");
+    }
+    public void fun(){
+        System.out.println("子类独有方法");
+    }
+}
+public class TestDemo1{
+    public static void main(String[] args) {
+        Person1 person1 = new Student3();
+        person1.print();
+        Student3 student3 = (Student3)person1;//向下转型
+        student3.fun();
+    }
+}
+//打印结果
+//子类覆盖方法
+//子类独有方法
+```
+
+向下转型之前必须先发生向上转型。
+
+
+
+```java
+Person per = new Person();
+Student stu = (Student) per;
+```
+
+
+
+上述程序在向下转型的时候没有经过向下转型，会出现错误: ***Exception in thread "main" java.lang.ClassCastException.***
+
+
+
+在转换前，为确保对象是某个类的实例，可以用运算符号 ***instanceof*** 测试。
+
+```java
+class Person1{
+
+    public void print(){
+        System.out.println("父类方法");
+    }
+}
+
+class Student3 extends Person1{
+    @Override
+    public void print() {
+        System.out.println("子类覆盖方法");
+    }
+    public void fun(){
+        System.out.println("子类独有方法");
+    }
+}
+public class TestDemo1{
+    public static void main(String[] args) {
+        Person1 person1 = new Student3();
+        System.out.println(person1 instanceof Student3);
+        System.out.println(person1 instanceof Person1);
+        if(person1 instanceof Student3){
+            Student3 student3 = (Student3)person1;
+            student3.fun();
+        }
+    }
+}
+//结果
+//true
+//true
+//子类独有方法
+```
+
+向上转型的目的是什么呢？看一组代码：
+
+```java
+/*
+向上转型的目的是什么呢
+ */
+
+//先看常规的代码
+class Person3{
+    public void print(){
+        System.out.println("父类方法");
+    }
+}
+class Student1 extends Person3{
+    @Override
+    public void print() {
+        System.out.println("子类覆盖父类方法");
+    }
+    public void fun(){
+        System.out.println("子类独有方法");
+    }
+}
+
+public class TestDemo1{
+    public static void main(String[] args) {
+        Person3 person3 = new Person3();
+        person3.print();
+        Student1 student1 = new Student1();
+        student1.print();
+        student1.fun();
+    }
+}
+```
+
+要求定义⼀个方法，这个方法可以接收Person类的所有⼦类实例，并调用Person类的方法。
+
+```java
+class Person1{
+    public void print(){
+        System.out.println("人类");
+    }
+}
+class Student3 extends Person1{
+    @Override
+    public void print() {
+        System.out.println("学生");
+    }
+}
+class Teacher extends Person1{
+    @Override
+    public void print() {
+        System.out.println("老师");
+    }
+}
+public class TestDemo1{
+    public static void main(String[] args) {
+        whoYouAre(new Student3());
+        whoYouAre(new Teacher());
+        whoYouAre(new Person1());
+    }
+    public static void whoYouAre(Person1 person1){
+        person1.print();
+    }
+}//打印结果 学生 老师 人类
+```
+
+通过代码可以得出，通过向上转型，我们统一了操作参数 （person1）
+
+
+
+
+
+
+
+
 
 
 
