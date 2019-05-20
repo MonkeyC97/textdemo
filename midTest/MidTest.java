@@ -301,3 +301,211 @@ for each 循环
 //        oilFish.fishmake();
 //    }
 //}
+
+import java.util.Scanner;
+
+//import java.util.Scanner;
+//
+////抽象父类
+//abstract  class FishMake{
+//    final void Makefish(){
+//        prepareRecipe();
+//        boilWater();
+//        boilFish();
+//        if(customerWantsAddRecipe()){
+//            addCondiments();
+//        }
+//    }
+//    void prepareRecipe(){
+//        System.out.println("准备食材");
+//    }
+//    void boilWater(){
+//        System.out.println("把水烧开");
+//    }
+//    void boilFish(){
+//        System.out.println("煮鱼");
+//    }
+//
+//    abstract void addCondiments();
+//    boolean customerWantsAddRecipe(){
+//        return true;
+//    }
+//}
+//class SourFish extends FishMake{
+//
+//    @Override
+//    void addCondiments() {
+//        System.out.println("加酸菜");
+//    }
+//}
+//class OilFish extends FishMake{
+//
+//    @Override
+//    void addCondiments() {
+//        System.out.println("加青菜或者雪菜");
+//    }
+//    public boolean customerWantsAddRecipe(){
+//        String answer = getInput();
+//        if(answer.equals("y")){
+//            return true;
+//        }else{
+//            return false;
+//        }
+//    }
+//    private String getInput(){
+//        String answer = null;
+//        System.out.println("您要在水煮鱼中加青菜吗y/n");
+//        Scanner scanner = new Scanner(System.in);
+//        answer = scanner.nextLine();
+//        return answer;
+//    }
+//}
+//
+//public class MidTest{
+//    public static void main(String[] args) {
+//        FishMake sourfish = new SourFish();
+//        FishMake oilfish = new OilFish();
+//        System.out.println("酸菜鱼Making");
+//        sourfish.Makefish();
+//        System.out.println("水煮鱼Making");
+//        oilfish.Makefish();
+//    }
+//
+//}
+//abstract class FishMake{
+//    void MakeFish(){
+//        prepared();
+//        boilWater();
+//        boilFish();
+//        if(customerWantToAddCondiment()){
+//            addcondiment();
+//        }
+//    }
+//    public void prepared(){
+//        System.out.println("准备食材");
+//    }
+//    public void boilWater(){
+//        System.out.println("把水煮开");
+//    }
+//    public void boilFish(){
+//        System.out.println("把鱼煮熟");
+//    }
+//    abstract void addcondiment();
+//
+//    boolean customerWantToAddCondiment(){
+//        return true;
+//    }
+//}
+//class SourFish extends FishMake{
+//    @Override
+//    void addcondiment() {
+//        System.out.println("加酸菜");
+//    }
+//}
+//class OilFish extends FishMake{
+//
+//
+//    @Override
+//    void addcondiment() {
+//        System.out.println("加青菜");
+//    }
+//
+//    private String getInput(){
+//        String answer = null;
+//        System.out.println("您要在水煮鱼中加青菜吗y/n");
+//        Scanner scanner = new Scanner(System.in);
+//        answer = scanner.nextLine();
+//        return answer;
+//    }
+//
+//    @Override
+//    boolean customerWantToAddCondiment() {
+//        String answer = getInput();
+//        if (answer.equals("y")){
+//            return true;
+//        }else{
+//            return false;
+//        }
+//    }
+//}
+//public class MidTest{
+//    public static void main(String[] args) {
+//       FishMake sourFish = new SourFish();
+//       FishMake oilFish = new OilFish();
+//       sourFish.MakeFish();
+//       oilFish.MakeFish();
+//    }
+//}
+
+//先写一个模版设计模式
+
+//抽象类  鱼的做法
+abstract class FishMake{
+
+        void MakeFish(){
+            prepare();
+            oilWater();
+            oilFish();
+            if (customerWantToAddRecipe()){
+                addCondiment();
+            }
+        }
+
+    public void prepare(){
+        System.out.println("准备食材");
+    }
+    public void oilWater(){
+        System.out.println("把水煮开");
+    }
+    public void oilFish(){
+        System.out.println("把鱼煮熟");
+    }
+    abstract void addCondiment();
+    boolean customerWantToAddRecipe(){
+        return true;
+    }
+}
+class SourFish extends FishMake{
+
+    @Override
+    void addCondiment() {
+        System.out.println("加酸菜");
+    }
+
+
+}
+class OilFish extends FishMake{
+
+    @Override
+    void addCondiment() {
+        System.out.println("加青菜");
+    }
+
+    @Override
+    boolean customerWantToAddRecipe() {
+       String answer = getInput();
+       if(answer.equals("y")){
+           return true;
+       }else{
+           return false;
+       }
+    }
+
+    private String getInput(){
+        String answer = null;
+        System.out.println("您要在水煮鱼中加青菜吗？y/n");
+        Scanner scanner = new Scanner(System.in);
+        answer = scanner.nextLine();
+        return answer;
+    }
+}
+
+public class MidTest{
+    public static void main(String[] args) {
+        FishMake fishMake = new SourFish();
+        fishMake.MakeFish();
+        FishMake fishMake1 = new OilFish();
+        fishMake1.MakeFish();
+    }
+}
+

@@ -332,6 +332,239 @@ y
 
 
 
+## 7.3接口
+
+​	
+
+##### 7.3.1 接口的概念
+
+​	Java语言中的接口常应用于一下两个方面：
+
+​	（1）将类看成是一个接口。用接口来声明一个变量。
+
+​	（2）用类实现接口。在接口中定义一组通用的抽象方法，然后，在类中实现接口中的这组方法，为接口中的方法添加方法体。这时，我们称**该类实现了接口**。
+
+​	Java语言中类具有单根性，也就是说一个字类不能同时继承俩个父类，但是一个类可以实现多个接口。
+
+
+
+##### 7.3.2 接口的定义
+
+​	1.接口定义格式如下：
+
+```java
+[访问修饰符] interface 接口名
+{
+	[常量定义]
+	[抽象方法的定义]
+}
+```
+
+​	例如：定义一个交易接口
+
+```java
+public interface ITrade {//接口声明
+    final String bankName = "ChinaBank";//定义常量银行名
+    abstract void saving(double monkey);//取款
+    abstract void fetch(double monkey);//存款
+}
+```
+
+​	2.接口的特征
+
+​	Java把接口当作一个特殊的类看待。当对java源文件编译的时候，每个接口被编译为一个独立的字节码文件。每个接口名对应生成一个同名的字节码文件。但是，接口没有实例。
+
+​	接口有一下特点：
+
+​	（1）接口中常量的修饰符，默认情况下都是public,static和final类型。
+
+​	（2）接口中的方法名的修饰符，默认情况下都是public 、abstract类型。
+
+##### 7.3.3 类实现接口
+
+​	（1）类实现接口的语句格式
+
+​	当一个类通过关键字implements声明自己实现一个或多个接口时，这个了就继承了接口中的成员，这时，类和接口的关系相当于子类和父类的关系。例如，类ClassName 实现接口Printable和接口Addable的格式如下：
+
+```java
+class ClassName implements Printable,Addable{
+  [常量定义][变量定义][方法定义]
+  //为接口中的抽象方法添加方法体
+}
+```
+
+​	例如，Dog类继承类Animal并实现接口Eatable和接口Sleepable的语句如下：
+
+```java
+class Dog extends Animal implements Eatable,Sleepable{
+  //在这里定义Dog类的成员，并为接口中的抽象方法添加方法体
+}
+```
+
+​	（2）类实现接口的实例
+
+```java
+public interface IGreeting {
+    final String humanName = "houchang";
+    abstract void voice();
+}
+
+class HumanBeings implements IGreeting{
+
+    @Override
+    public void voice() {
+        System.out.println("hello");
+    }
+}
+
+public class Dogs implements IGreeting {
+    @Override
+    public void voice() {
+        System.out.println("汪汪汪");
+    }
+}
+
+public class Cats implements IGreeting {
+    @Override
+    public void voice() {
+        System.out.println("喵喵喵");
+    }
+}
+public class InterfaceDemo {
+    public static void main(String[] args) {
+        HumanBeings houchang = new HumanBeings();
+        houchang.voice();
+        Dogs dogs = new Dogs();
+        dogs.voice();
+        Cats cats = new Cats();
+        cats.voice();
+    }
+}//hello 汪汪汪 喵喵喵
+```
+
+注意的问题：
+
+（1）一个类实现接口时，在类的声明部分用implements 关键字声明该类实现哪些接口
+
+（2）若实现接口的类不是abstract的抽象类，则在类的定义部分必须实现接口中的所有抽象方法，即为所有抽象方法定义方法体。
+
+（3）类实现接口中的方法时，必须使用完全相同的方法头，即有完全相同的返回值和参数列表。
+
+（4）接口中的抽象方法的访问修饰符都默认为public，因此在类的定义中必须显式地使用public修饰符，否则会出现"Cannot reduce the visibility of the inherited method"（不能降低方法的访问范围）
+
+（5）若类药实现的接口有一个或多个父接口，则在类体中必须实现该接口及其所有父接口中的所有抽象方法。
+
+##### 7.3.4 接口当类使用
+
+```java
+public interface IEmployee {
+    public static final double prize = 1000;
+    public abstract void addSalary(int n);
+}
+
+public class Employee implements IEmployee {
+   private String name;
+   private double salary;
+   private String hireDay;
+   public double getSalary(){
+       return salary;
+   }
+   public String getName(){
+       return this.name;
+   }
+   public String getHireDay(){
+       return this.hireDay;
+   }
+    public void addSalary(int n) {
+        this.salary = this.salary + prize*n;
+    }
+    public Employee(String name,double salary,String hireDay){
+       this.name = name;
+       this.hireDay = hireDay;
+       this.salary = salary;
+    }
+    public void getInfo(){
+        System.out.println("I am employee");
+    }
+}
+public class UseIEmpolyee {
+
+    public UseIEmpolyee(){
+        Employee e1 = new Employee("HouChang",3300.00,"2019-09-01");
+        Employee e2 = new Employee("YaoYihuan",13300,"2019-09-02");
+        e1.addSalary(2);
+        System.out.println("name:"+e1.getName());
+        e1.getInfo();
+        System.out.println("Salary:"+e1.getSalary());
+        System.out.println("hireDay:"+e1.getHireDay()+"\n");
+
+        //e2
+        e2.addSalary(1);
+        System.out.println("name:"+e2.getName());
+        e2.getInfo();
+        System.out.println("salary:"+e2.getSalary());
+        System.out.println("hireday:"+e2.getHireDay());
+    }
+
+    public static void main(String[] args) {
+        new UseIEmpolyee();
+    }
+}
+
+/*打印结果
+name:HouChang
+I am employee
+Salary:5300.0
+hireDay:2019-09-01
+
+name:YaoYihuan
+I am employee
+salary:14300.0
+hireday:2019-09-02
+*/
+```
+
+
+
+##### 7.3.4接口的继承
+
+```java
+//先定义一个接口
+interface DoIt{
+  abstract void doSomething(int i,double x);
+ 	abstract void doSomethingElse(String s);
+}
+//假设有许多类现在已经实现了这个接口
+class Person implements DoIt{
+  ...//覆盖接口中所有的抽象方法
+}
+class Animals implements DoIt{
+  ...//覆盖接口中所有的抽象方法
+}
+class Robot implements Doit{
+  ...//覆盖接口中所有的抽象方法
+}
+...//此时，我们需要给这个接口中再添加一个方法
+  //接口变成了如下：
+interface DoIt{
+  abstract void doSomething(int i,double x);
+ 	abstract void doSomethingElse(String s);
+  boolean didItWork(int i,String s,double x);//添加方法
+}
+//那么问题出现了，哪些实现了原来接口的类都要改变，如果类有很多，则相应地要进行大量修改
+
+//解决办法（接口的继承）
+
+interface DoItPlus extends DoIt{
+  boolean didItWork(int i,double x,String s);
+}
+//此时你需要定义的类直接去实现这个继承接口之后的接口就可以在类中覆盖三种抽象方法了，而不需要大量更改代码
+```
+
+
+
+
+
 
 
 
