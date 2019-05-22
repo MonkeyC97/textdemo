@@ -374,7 +374,7 @@ public interface ITrade {//接口声明
 
 ​	Java把接口当作一个特殊的类看待。当对java源文件编译的时候，每个接口被编译为一个独立的字节码文件。每个接口名对应生成一个同名的字节码文件。但是，接口没有实例。
 
-​	接口有一下特点：
+​	接口有以下特点：
 
 ​	（1）接口中常量的修饰符，默认情况下都是public,static和final类型。
 
@@ -563,7 +563,376 @@ interface DoItPlus extends DoIt{
 
 
 
+## 7.4 工厂设计模式
 
+
+
+##### 1 思考如下场景
+
+有一天你想去买笔记本电脑，有苹果的MacBook Pro和微软的SurfaceBook。代码如下：
+
+```java
+interface Computer{
+  abstract void print();
+}
+
+public class MacbookComputer implements Computer{
+
+    @Override
+    public void printComputer() {
+        System.out.println("this is a MacBookPro");
+    }
+}
+
+public class SurfacebookComputer implements Computer {
+    @Override
+    public void printComputer() {
+        System.out.println("this is a SurfaceBook");
+    }
+}
+
+public class Client{
+   public void buyComputer(Computer computer){
+       computer.printComputer();
+   }
+
+    public static void main(String[] args) {
+        Client houchang = new Client();
+        MacbookComputer macbookComputer = new MacbookComputer();
+        houchang.buyComputer(macbookComputer);
+    }
+}
+//如果现在又想买其他品牌的笔电，那就得更改代码创建其他品牌的笔电类去实现Computer接口
+//此时我们可以定义一个类来产生其他类的实例，这些实例具有同样的父类
+```
+
+
+
+##### 2.简单工厂模式
+
+```java
+interface Computer{
+  void print();
+}
+
+class MacBookPro implements Computer{
+  public void print(){
+    System.out.println("mac");
+  }
+}
+
+class SurfaceBook implements Computer{
+  public void print(){
+    System.out.print(){
+      System.out.println("sur");
+    }
+  }
+  
+class ComputerFactory{
+    public static Computer getInstance(String type){
+        Computer computer = null;
+        if(type.equals("mac")){
+            computer = new MacBookCompter();
+        }
+        if(type.equals("sur")){
+            computer = new  SurfaceBook();
+        }
+        return computer;
+    }
+}
+public class Client{
+  
+  public static void buyComputer(Computer computer){
+    computer.print();
+  }
+  public static void main(String[] args){
+    Client client = new Clinet();
+    System.out.println("请输入你要购买的型号：");
+    Scanner scanner = new Scanner(System.in);
+    String type = scanner.nextLine();
+    client.buyComputer(ComputerFactory.getInstance(String type));
+  }
+}
+  /*打印结果
+  请输入你要买的型号:
+	sur
+	surfacebook for you
+	*/
+
+
+```
+
+简单工厂模式的优缺点：
+
+​	优点：（1）简单实现
+
+​				（2）把类的实例化交给工厂，易于解耦
+
+​	缺点：（1）添加具体产品需要修改工厂，违反了OCP开放封闭原则。
+
+
+
+##### 3.工厂方法模式
+
+```java
+interface Computer{
+  void print();
+}
+
+class Macbook implements Computer{
+  public void print(){
+    System.out.println("macbook");
+  }
+}
+
+class SurfaceBook implements Computer{
+  public void print(){
+    System.out.println("surface");
+  }
+}
+
+interface ComputerFactory{
+  Computer createComputer();
+}
+
+class AppleFactory implements ComputerFactory{
+  public Computer createComputer(){
+    return new Macbook();
+  }
+}
+
+class MicrosoftFactory implements ComputerFactory{
+  public Computer createComputer(){
+    return new SurfaceBook();
+  }
+}
+
+public class Client{
+  public void buyComputer(Computer computer){
+    computer.print();
+  }
+
+public static void main(String[] args){
+  Client client = new Client();
+ 	ComputerFactory factory = new AppleFactory();
+  client.buyComputer(factory.createComputer();)
+  
+ }
+}
+  
+```
+
+
+
+工厂方法模式的优点：（1）降低了代码耦合度，对象的生成交给子类去完成，实现了开放封闭原则
+
+​								   	（2）每次添加⼦产品，不需要修改原有代码
+
+
+
+工厂方法模式的缺点：（1）代码量大大提升，因为每个产品都需要一个具体工厂
+
+​								  	（2）当你增加一个抽象产品，需要修改工厂，不符合OCP开放封闭原则
+
+
+
+##### 4.简单工厂模式与工厂方法模式总结：
+
+​	对于简单⼯厂模式而言，创建对象的逻辑判断放在了工厂类中，客户不感知具体的类，但是其违背
+了开闭原则，如果要增加新的具体类，就必须修改工⼚类。
+
+​	对于工厂方法模式⽽言，是通过扩展来新增具体类的，符合开闭原则，但是在客户端就必须要感知
+到具体的工⼚类，也就是将判断逻辑由简单工厂的工⼚类挪到客户端。
+
+​	工厂方法横向扩展很方便，假如该⼯厂又有新的产品 Macbook Air 要生产，那么只需要创建相应
+的工厂类和产品类去实现抽象工厂接口和抽象产品接口即可，而不用去修改原有已经存在的代码。
+
+
+
+##### 5 抽象工厂模式
+
+```java
+public interface Computer {
+    void print();
+}
+
+public class Macbook implements Computer {
+    @Override
+    public void print() {
+        System.out.println("macbook");
+    }
+}
+
+public class Surfacebook implements Computer {
+    @Override
+    public void print() {
+        System.out.println("surface");
+    }
+}
+
+public interface OperatingSystem {
+    void printSystem();
+}
+
+public class MacOSMojave implements OperatingSystem {
+    @Override
+    public void printSystem() {
+        System.out.println("MacOS");
+    }
+}
+
+public class Windows10 implements OperatingSystem {
+    @Override
+    public void printSystem() {
+        System.out.println("win10");
+    }
+}
+
+public interface ProductionFactory {
+    Computer createComputer();
+    OperatingSystem createSystem();
+}
+
+public class AppleFactory implements ProductionFactory {
+    @Override
+    public Computer createComputer() {
+        return new Macbook();
+    }
+
+    @Override
+    public OperatingSystem createSystem() {
+        return new MacOSMojave();
+    }
+}
+
+public class MicrosoftFactory implements ProductionFactory {
+    @Override
+    public Computer createComputer() {
+        return new Surfacebook();
+    }
+
+    @Override
+    public OperatingSystem createSystem() {
+        return new  Windows10();
+    }
+}
+
+public class Client {
+    public void buyComputer(Computer computer){
+        computer.print();
+    }
+    public void useSystem(OperatingSystem system){
+        system.printSystem();
+    }
+    public static void main(String[] args) {
+        Client client = new Client();
+        ProductionFactory factory = new AppleFactory();
+        client.buyComputer(factory.createComputer());
+        client.useSystem(factory.createSystem());
+    }
+}
+//macbook 	MacOSMojave
+
+```
+
+
+
+抽象工厂的优点：
+
+（1）代码解耦，实现多个产品族(相关联产品组成的家族)，而⼯厂方法模式的单个产品,可以满
+
+⾜更多的生产需求很好的满足OCP开放封闭原则
+
+（2）抽象⼯⼚模式中我们可以定义实现不止⼀个接口，⼀个⼯⼚也可以生成不⽌⼀个产品类对于复杂
+对象的⽣产相当灵活易扩展
+
+抽象工厂的缺点：
+
+（1）扩展产品族相当麻烦 ⽽且扩展产品族会违反OCP,因为要修改所有的⼯厂
+
+（2）由于抽象⼯厂模式是工厂方法模式的扩展 总体的来说 很笨重
+
+
+
+##### 6 总结
+
+​		1.简单工厂模式最大的优点就是工厂内有具体的逻辑去判断生成什么产品，将类的实例化交给了工厂，这样当我们需要什么产品只需要修改工厂的调用而不需要去修改客户端，对于客户端来说降低了与具体产品的依赖。
+
+​		2.工厂方法模式是简单工厂的扩展，工厂方法模式把原先简单工厂中的实现哪个类的逻辑判断交给了客户端，如果想添加功能之需要修改客户端和添加具体的功能，不用去修改之前的类。
+
+​		3.抽象工厂模式是进一步扩展了工厂方法模式，它把原先的工厂方法模式中只能有一个抽象产品不能添加产品族的缺点克服了，抽象工厂模式不仅遵循了OCP原则，而且可以添加更多产品（抽象产品），具体工厂也不仅可以生成单一产品，而是生成一组产品，抽象工厂也是声明一组产品，对应扩展更加灵活，但是要是扩展族系就会很笨重。
+
+
+
+##### 7 代理模式
+
+​	两个子类共同实现一个接口，其中一个子类负责真实业务实现，另外一个子类完成辅助真实业务主题的操作。
+
+```java
+public interface ISubject {
+    void buyComputer();
+}
+
+public class RealSubject implements ISubject {
+    @Override
+    public void buyComputer() {
+        System.out.println("买一台苹果笔记本");
+    }
+}
+
+public class ProxySubject implements ISubject {
+    private ISubject subject;
+    public ProxySubject(ISubject subject){
+        this.subject = subject;
+    }
+    public void produceComputer(){
+        System.out.println("生产苹果电脑");
+    }
+    public void afterSale(){
+        System.out.println("售后服务");
+    }
+
+    @Override
+    public void buyComputer() {
+        this.produceComputer();
+        RealSubject subject = new RealSubject();
+        subject.buyComputer();
+        this.afterSale();
+    }
+}
+
+public class Factory {
+    public static ISubject getInstance(){
+        return  new ProxySubject(new RealSubject());
+    }
+}
+
+public class Test {
+    public static void main(String[] args) {
+        ISubject subject = Factory.getInstance();
+        subject.buyComputer();
+    }
+}
+/*
+生产苹果电脑
+买一台苹果笔记本
+售后服务
+*/
+```
+
+
+
+## 7.5 抽象类与接口的区别
+
+
+
+|   No |   区别   |            抽象类            |                             接口                             |
+| ---: | :------: | :--------------------------: | :----------------------------------------------------------: |
+|    1 | 结构组成 |       普通类+抽象方法        |                        抽象+全局变量                         |
+|    2 |   权限   |           各种权限           |                            public                            |
+|    3 | 子类使用 |           extends            |                          implements                          |
+|    4 |   关系   | 一个抽象类可以实现若干个接口 | 接口不能继承抽象类，但是接口可以通过extends同时继承多个父接口 |
+|    5 | 子类限制 |   一个子类只能继承一个父类   |                   一个子类可以实现多个接口                   |
 
 
 
