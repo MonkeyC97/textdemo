@@ -32,6 +32,8 @@ public class Test2 {
     public static void main(String[] args) {
         Person3 monkeyc = new Person3("monkeyc97",22);
         Person3 monkeyc97 = new Person3("monkeyc97",22);
+        System.out.println(monkeyc == monkeyc97);
         System.out.println(monkeyc.equals(monkeyc97));
     }
 }
+
