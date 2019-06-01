@@ -4,11 +4,16 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Date;
 
-public class Person implements Serializable {
+public class Person implements Serializable,Comparable<Person>{
     private String name;
     private Integer age;
     private String[] getSkills;
     private Date birthday;
+    public Person(){}
+    public Person(String name,Integer age){
+        this.name = name;
+        this.age = age;
+    }
 
     public String getName() {
         return name;
@@ -50,5 +55,15 @@ public class Person implements Serializable {
                 ", getSkills=" + Arrays.toString(getSkills) +
                 ", birthday=" + birthday +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Person o) {
+        //策略（按对象的哪个集体属性做比较）
+//        return this.age - o.getAge();
+        int a = this.age;
+        int b = o.getAge();
+        return a < b ? -1 : (a - b);
+
     }
 }
