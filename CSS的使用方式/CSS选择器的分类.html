@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>CSS选择器</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <script src='main.js'></script>
+    <!--
+        CSS的选择器
+            基本选择器3个
+            标签(element)选择器:
+                    格式：标签名称{
+                        书写样式;
+                    }
+            class选择器:
+                    在标签中指定class属性
+                
+            id选择器:
+                    在标签中指定id属性值
+                    特点:id属性值在同一个html页面必须唯一
+                    DOM操作使用js:documebt.get
+                    格式:
+                        #id属性值{
+                            书写样式;
+                        }
+            优先级 id > class > 标签
+                
+        其他选择器:
+                交集选择器（子元素选择器）
+
+                并集选择器:
+                        选择器1 选择器2 ...{
+                            书写样式;
+                        }
+
+                通配符选择器 *
+                        *{
+                            书写样式;
+                        }
+
+                伪类选择器（重点）
+    -->
+    <style>
+        /* 标签选择器 */
+    /* div{
+        font-size: 20px;
+        color: antiquewhite;
+    } */
+    /* class选择器 */
+    /* .cl1{
+        font-size: 10px;
+        color: brown;
+    }*/
+    /* 并集选择器:同时给第一个div和第二个div设置样式 */
+
+    /*
+    交集选择器（子元素）
+    */
+
+    /*
+    通配符选择器
+    */
+
+    </style> 
+</head>
+<body>
+    <div cl1="cls">div1</div>
+    <div>div1</div>
+    <div>div2</div>
+    <div>div3</div>
+</body>
+</html>
