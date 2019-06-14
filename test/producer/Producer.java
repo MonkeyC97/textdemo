@@ -1,8 +1,10 @@
 package test.producer;
 
-import test.Goods.Goods;
+import test.common.Goods;
 
 import java.util.Queue;
+import java.util.Random;
+import java.util.UUID;
 
 public class Producer implements Runnable{
 
@@ -11,13 +13,9 @@ public class Producer implements Runnable{
         this.queue = queue;
     }
 
-    public Queue<Goods> getQueue() {
-        return queue;
-    }
-
     @Override
     public void run() {
-        Goods AllNewBMW3 = new Goods(1,"宝马三系",350000);
+
         while(true){
             try {
                 Thread.sleep(500);
@@ -33,7 +31,12 @@ public class Producer implements Runnable{
                         e.printStackTrace();
                     }
                 }else{
-                    queue.add(AllNewBMW3);
+                    String id = UUID.randomUUID().toString();
+                    String name = "AllNew宝马325Li";
+                    Double price = new Random().nextDouble();
+                    Goods goods = new Goods(id,name,price);
+                    System.out.println(Thread.currentThread().getName() + " 生产商品 " + goods);
+                    queue.add(goods);
                 }
             }
         }

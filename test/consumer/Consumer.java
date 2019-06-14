@@ -1,20 +1,12 @@
 package test.consumer;
 
-import test.Goods.Goods;
+import test.common.Goods;
 
 import java.util.Queue;
 
 public class Consumer implements Runnable{
     private Queue<Goods> queue;
     public Consumer(Queue<Goods> queue){
-        this.queue = queue;
-    }
-
-    public  Queue<Goods> getQueue() {
-        return queue;
-    }
-
-    public void setQueue(Queue<Goods> queue) {
         this.queue = queue;
     }
 
@@ -28,10 +20,13 @@ public class Consumer implements Runnable{
             }
             synchronized (this.queue){
                 if(this.queue.size() == 0){
-                    System.out.println("库存为空，加快生产");
-                    notifyAll();
+                    System.out.println(Thread.currentThread().getName()+"库存为空，加快生产");
+                    this.queue.notifyAll();
                 }else{
-                    queue.poll();
+                    Goods goods = this.queue.poll();
+                    if (goods != null) {
+                        System.out.println(Thread.currentThread().getName() + " 消费商品 " + goods);
+                    }
                 }
             }
         }
