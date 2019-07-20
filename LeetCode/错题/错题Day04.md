@@ -79,7 +79,28 @@ public class Main{
 输入两个字符串，从第一字符串中删除第二个字符串中所有的字符。例如，输入”They are students.”和”aeiou”，则删除之后的第一个字符串变成”Thy r stdnts.”
 
 ```java
+import java.util.Scanner;
 
+/**
+ * 删除公共字符
+ */
+public class Test{
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        while(scanner.hasNext()){
+            char[] c = scanner.nextLine().toCharArray();
+            String str = scanner.nextLine();
+            //遍历数组c
+            for(int i = 0; i < c.length;i++){
+                //如果给定的str中不包括c数组的字符，那么打印c数组当前的元素
+                //如果包括，那么跳过
+                if(!str.contains(String.valueOf(c[i]))){
+                    System.out.print(c[i]);
+                }
+            }
+        }
+    }
+}
 ```
 
 
