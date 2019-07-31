@@ -1,3 +1,8 @@
+---
+title: 通配符，类型擦除
+---
+
+
 #### 1.通配符
 
 先看一段代码：
@@ -31,7 +36,7 @@ class Point{
                 '}';
     }
 }
-
+<!- more -->
 public class Test4 {
     public static void main(String[] args) {
         Point point = new Point();
