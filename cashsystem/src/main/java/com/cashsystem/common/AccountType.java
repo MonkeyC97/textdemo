@@ -1,5 +1,10 @@
 package com.cashsystem.common;
 
+import lombok.Getter;
+import lombok.ToString;
+
+@Getter
+@ToString
 public enum AccountType {
 
     ADMIN(1,"管理员"),CUSTOMER(2,"客户");

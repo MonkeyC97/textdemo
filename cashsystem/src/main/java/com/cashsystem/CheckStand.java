@@ -32,7 +32,6 @@ public class CheckStand extends AbstractCommand {
                         break;
                         default:
                 }
-                scanner.close();
             }
         }
     }

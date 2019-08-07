@@ -14,5 +14,7 @@ public class AccountService {
         return this.accountDao.login(username,password);
     }
 
-
+    public boolean register(Account account){
+        return this.accountDao.register(account);
+    }
 }

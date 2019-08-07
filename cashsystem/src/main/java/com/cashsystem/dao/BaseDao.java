@@ -18,9 +18,11 @@ public class BaseDao {
             synchronized(DataSource.class) {
                 if (dataSource == null) {
                     dataSource = new MysqlDataSource();//MySql数据源
-                    String host = "127.0.0.1";
-                    String port = "3306";
-                    ((MysqlDataSource) dataSource).setUrl("jdbc:mysql://" + (host + ":" + port) + "/check_stand"+"useSSL=false");
+//                    String host = "127.0.0.1";
+//                    String port = "3306";
+//                    ((MysqlDataSource) dataSource).setUrl("jdbc:mysql://" + (host + ":" + port) + "/check_stand");
+                    String url = "jdbc:mysql://localhost:3306/check_stand?user=root&password=hc19970626&useSSL=false";
+                    ((MysqlDataSource) dataSource).setUrl(url);
                     ((MysqlDataSource) dataSource).setUser("root");
                     ((MysqlDataSource) dataSource).setPassword("hc19970626");
                 }

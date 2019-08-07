@@ -5,10 +5,7 @@ import com.cashsystem.common.AccountType;
 import com.cashsystem.entity.Account;
 import org.apache.commons.codec.digest.DigestUtils;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class AccountDao extends BaseDao{
     //操作数据库
@@ -27,16 +24,15 @@ public class AccountDao extends BaseDao{
 
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1,username);
-            preparedStatement.setString(2, DigestUtils.md5Hex(password));
+            preparedStatement.setString(2,DigestUtils.md5Hex(password));
 
             resultSet = preparedStatement.executeQuery();
             //返回结果集到resultSet
             if(resultSet.next()){
                 //解析resultSet，拿到对应的account
-                extractAccount(resultSet);
+                account = extractAccount(resultSet);
+                //extractAccount(resultSet)
             }
-
-
 
         }catch (SQLException e){
             e.printStackTrace();
@@ -59,5 +55,39 @@ public class AccountDao extends BaseDao{
         }
 
         return account;
+    }
+
+    //注册
+    public boolean register(Account account){
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;//预处理SQL命令
+        ResultSet resultSet = null;
+        boolean effect = false;
+        try{
+            connection = this.getConnection(true);
+            String sql = "insert into account(username,password,name," +
+                    "account_type,account_status) values(?,?,?,?,?)";
+            //Statement.RETURN_GENERATED_KEYS在预编译的时候就获取自增的id的值
+            preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1,account.getUsername());
+            preparedStatement.setString(2,DigestUtils.md5Hex(account.getPassword()));
+            preparedStatement.setString(3,account.getName());
+            preparedStatement.setInt(4,account.getAccountType().getFlag());
+            preparedStatement.setInt(5,account.getAccountStatus().getFlag());
+
+           effect =  (preparedStatement.executeUpdate() == 1);
+           //获取自增的主键
+            resultSet = preparedStatement.getGeneratedKeys();
+
+           if(resultSet.next()){
+               Integer id = resultSet.getInt(1);
+               account.setId(id);
+           }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }finally {
+            this.closeResource(resultSet,preparedStatement,connection);
+        }
+        return effect;
     }
 }
