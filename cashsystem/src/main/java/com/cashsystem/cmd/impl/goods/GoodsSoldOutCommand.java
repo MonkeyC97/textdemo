@@ -27,12 +27,12 @@ public class GoodsSoldOutCommand extends AbstractCommand {
             printlnInfo("确认是否下架(y/n yes/no)：");
             String anwser = scanner.next();
             if("y".equalsIgnoreCase(anwser) || "yes".equalsIgnoreCase(anwser)){
-//                boolean effect = this.goodsService.soldOutGoods(goodsId);
-//                if(effect){
-//                    System.out.println("商品下架成功");
-//                }else{
-//                    printlnInfo("商品下架失败，稍后重试");
-//                }
+                boolean effect = this.goodsService.soldOutGoods(goodsId);
+                if(effect){
+                    System.out.println("商品下架成功");
+                }else{
+                    printlnInfo("商品下架失败，稍后重试");
+                }
             }
         }
     }

@@ -26,4 +26,9 @@ public class GoodsService {
     public boolean modifyGoods(Goods goods){
         return this.goodsDao.modifyGoods(goods);
     }
+    //下架商品
+    public boolean soldOutGoods(int id){
+        return this.goodsDao.soldOutGoods(id);
+    }
+
 }

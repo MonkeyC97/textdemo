@@ -6,6 +6,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 public class GoodsDao extends BaseDao{
+    //浏览商品
     public List<Goods> quarryAllGoods(){
         Connection connection = null;
         PreparedStatement preparedStatement = null;//预处理SQL命令
@@ -13,7 +14,7 @@ public class GoodsDao extends BaseDao{
         List<Goods> list = new ArrayList<>();
         try{
             connection = this.getConnection(true);
-            String sql = "select id,name,introduce,unit,price,discount" +
+            String sql = "select id,name,introduce,stock,unit,price,discount" +
                     " from goods";
             preparedStatement = connection.prepareStatement(sql);
             resultSet = preparedStatement.executeQuery();
@@ -56,6 +57,11 @@ public class GoodsDao extends BaseDao{
         }
         try {
             goods.setUnit(resultSet.getString("Unit"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try{
+            goods.setPrice(resultSet.getInt("price"));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -150,6 +156,27 @@ public class GoodsDao extends BaseDao{
             e.printStackTrace();
         }finally {
             this.closeResource(null,preparedStatement,connection);
+        }
+        return effect;
+    }
+
+    //下架商品
+    public boolean soldOutGoods(int id){
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        boolean effect = false;
+        try{
+            connection = this.getConnection(true);
+            String sql = "delete from goods where id = ?";
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1,id);
+            effect = preparedStatement.executeUpdate() == 1;
+            return effect;
+        }catch (SQLException e){
+            e.printStackTrace();
+        }finally {
+            this.closeResource(resultSet,preparedStatement,connection);
         }
         return effect;
     }
