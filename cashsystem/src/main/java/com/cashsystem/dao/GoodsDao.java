@@ -134,30 +134,28 @@ public class GoodsDao extends BaseDao{
     }
 
     //更新商品
-    public boolean modifyGoods(Goods goods){
+    public boolean modifyGoods(Goods goods) {
+        //名称，简介，价格，折扣，库存
         Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        boolean effect = false;
-
-        try{
+        PreparedStatement statement = null;
+//        ResultSet resultSet = null;
+        try {
             connection = this.getConnection(true);
-            String sql = "update goods set name =?,introduce =?,stock=?,unit=?,price=?,discount=?where id=?";
-            preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1,goods.getName());
-            preparedStatement.setString(2,goods.getIntroduce());
-            preparedStatement.setInt(3,goods.getStock());
-            preparedStatement.setString(4,goods.getUnit());
-            preparedStatement.setInt(5,goods.getPrice());
-            preparedStatement.setInt(6,goods.getDiscount());;
-            preparedStatement.setInt(7,goods.getId());
-            effect = (preparedStatement.executeUpdate() == 1);
-
+            String sql = "update goods set name=? , introduce =?,  stock=? , price=?, discount =? where  id= ?";
+            statement = connection.prepareStatement(sql);
+            statement.setString(1, goods.getName());
+            statement.setString(2, goods.getIntroduce());
+            statement.setInt(3, goods.getStock());
+            statement.setInt(4, goods.getPrice());
+            statement.setInt(5, goods.getDiscount());
+            statement.setInt(6, goods.getId());
+            return statement.executeUpdate() == 1;
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
-            this.closeResource(null,preparedStatement,connection);
+        } finally {
+            this.closeResource(null,statement, connection);
         }
-        return effect;
+        return false;
     }
 
     //下架商品
@@ -177,6 +175,28 @@ public class GoodsDao extends BaseDao{
             e.printStackTrace();
         }finally {
             this.closeResource(resultSet,preparedStatement,connection);
+        }
+        return effect;
+    }
+
+    public boolean updateAfterPay(Goods goods, int goodsBuyNum) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        boolean effect = false;
+        try{
+            connection = this.getConnection(true);
+            String sql = "update goods set stock=? where id=?";
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1,goods.getStock() - goodsBuyNum);
+            preparedStatement.setInt(2,goods.getId());
+
+            if(preparedStatement.executeUpdate()==1){
+                effect = true;
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
         }
         return effect;
     }

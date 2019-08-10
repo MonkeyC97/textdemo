@@ -1,5 +1,12 @@
 package com.cashsystem.common;
 
+import com.cashsystem.entity.OrderItem;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@ToString
 public enum OrderStatus {
     PLAYING(1,"待支付"),OK(2,"支付完成");
     private int flag;
@@ -9,7 +16,7 @@ public enum OrderStatus {
         this.desc = desc;
     }
 
-    public OrderStatus valueof(int flag){
+    public static OrderStatus valueof(int flag){
         for(OrderStatus orderStatus:values()){
             if(orderStatus.flag == flag){
                 return orderStatus;

@@ -2,6 +2,7 @@ package com.cashsystem.service;
 
 import com.cashsystem.dao.GoodsDao;
 import com.cashsystem.entity.Goods;
+import com.cashsystem.entity.Order;
 
 import java.util.List;
 
@@ -29,6 +30,10 @@ public class GoodsService {
     //下架商品
     public boolean soldOutGoods(int id){
         return this.goodsDao.soldOutGoods(id);
+    }
+    //支付订单
+    public boolean updateAfterPay(Goods goods,int goodsNum){
+        return this.goodsDao.updateAfterPay(goods,goodsNum);
     }
 
 }

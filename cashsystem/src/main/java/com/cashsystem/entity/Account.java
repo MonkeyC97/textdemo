@@ -16,6 +16,4 @@ public class Account {
     private String name;
     private AccountType accountType;
     private AccountStatus accountStatus;
-
-
 }
