@@ -1,5 +1,6 @@
 package com.monkeyc.blog.util;
 
+import com.monkeyc.blog.exception.SystemException;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 import javax.sql.DataSource;
@@ -54,6 +55,8 @@ public class DbUtil {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            // TODO 处理数据库异常
+            throw new SystemException("数据库错误");
         }
     }
 }

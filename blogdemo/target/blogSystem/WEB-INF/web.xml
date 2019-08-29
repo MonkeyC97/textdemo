@@ -5,13 +5,34 @@
          version="4.0">
 
     <servlet>
-        <servlet-name>ArticleList</servlet-name>
-        <servlet-class>com.monkeyc.blog.Servlet.ArticleList</servlet-class>
+        <servlet-name>articleList</servlet-name>
+        <servlet-class>com.monkeyc.blog.Servlet.ArticleListServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>ArticleList</servlet-name>
-        <url-pattern>/ArticleList</url-pattern>
+        <servlet-name>articleList</servlet-name>
+        <url-pattern>/articleList</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>articleAdd</servlet-name>
+        <servlet-class>com.monkeyc.blog.Servlet.ArticleAddServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>articleAdd</servlet-name>
+        <url-pattern>/articleAdd</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>articleUpdate</servlet-name>
+        <servlet-class>com.monkeyc.blog.Servlet.ArticleUpdateServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>articleUpdate</servlet-name>
+        <url-pattern>/articleUpdate</url-pattern>
     </servlet-mapping>
 
 
 </web-app>
+

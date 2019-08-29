@@ -3,7 +3,7 @@ package com.monkeyc.blog.entity;
 public class JSON {
     private boolean success;//表明是否成功
 
-    private String code;//错误没码
+    private String code;//错误码
 
     private String message;//错误信息
 

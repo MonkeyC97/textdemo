@@ -1,6 +1,8 @@
 package com.monkeyc.blog.Servlet;
 
 import com.monkeyc.blog.entity.JSON;
+import com.monkeyc.blog.exception.ParameterException;
+import com.monkeyc.blog.exception.SystemException;
 import com.monkeyc.blog.util.JSONUtil;
 
 import javax.servlet.ServletException;
@@ -29,10 +31,23 @@ public abstract class BaseServlet extends HttpServlet{
             result.setMessage("操作成功");
             result.setData(data);
         } catch (Exception e) {
+//            if(ParameterException.class.isAssignableFrom(e.getClass())){
             e.printStackTrace();
-            result.setCode("500");
-            result.setMessage("服务器错误");
+//
+//            }
+            if(e instanceof ParameterException){
+                result.setCode(((ParameterException)e).getCode());
+            }
+            else if(e instanceof SystemException){
+                result.setCode(((SystemException) e).getCode());
+                result.setMessage(e.getMessage());
+            }
+            else{
+                result.setCode("500");
+                result.setMessage("服务器错误");
+            }
         }
+        //处理不了的，往上抛
         response.getWriter().write(JSONUtil.Myformat(result));
     }
 

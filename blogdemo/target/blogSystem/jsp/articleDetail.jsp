@@ -66,8 +66,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<!-- Modal -->
 			<div class="modal fade" id="tip_failed" tabindex="-1" role="dialog"
 				aria-labelledby="tip_failed_label">
-				<div class="modal-dialog" role="document" style="display: width: 600px;">
-					<div class="modal-content">
+				<div class="modal-dialog" role="document">
+					<div id="fail-modal-content" class="modal-content">
 						<div class="modal-header">
 							<button type="button" class="close" data-dismiss="modal"
 								aria-label="Close">
@@ -84,7 +84,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<a class="btn btn-primary" role="button" data-toggle="collapse"
 									href="#tip_failed_trace" aria-expanded="false"
 									aria-controls="tip_failed_trace">查看错误信息</a>
-								<div class="collapse" id="tip_failed_trace" style="word-break:break-all; word-wrap:break-all;"></div>
+								<div class="collapse" id="tip_failed_trace" style="word-break:break-all; word-wrap:break-word;"></div>
 							</div>
 						</div>
 						
@@ -103,11 +103,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</div>
 </body>
 <script type="text/javascript">
-var devToken = '<%=request.getParameter("devToken")%>';
-var devUri = "";
-if (typeof devToken === 'string'  &&  devToken.length  >  0){
-	devUri = "devToken="+devToken;
-}
 var ue = UE.getEditor('ueditor_content', {
     initialFrameHeight: 400, //设置编辑器高度
     UEDITOR_HOME_URL: "static/ueditor/",
@@ -126,6 +121,75 @@ ue.addListener('ready',function(){
 
 var articleId = '<%=request.getParameter("id")%>';
 var articleType = '<%=request.getParameter("type")%>';
+function articleSubmit(){
+	var type = '<%=request.getParameter("type")%>';
+
+	var uri = '#';
+	var json = {
+		title : $("#article_title").val(),
+		content : ue.getContent()
+	};
+
+	// 新增博客文章，提交数据为：title,content,userAccount
+    // 修改博客文章，提交数据：title,content,id
+	if(type=="add"){
+		uri = "articleAdd";
+		json.userAccout = '<%=request.getParameter("userAccout")%>';
+	}else if(type=="update"){
+		uri = "articleUpdate";
+		json.id = articleId;
+	}
+	alert(uri+"\n"+JSON.stringify(json));
+	$.ajax({
+		type:'post',
+		url:uri,
+		// ajax默认的请求类型
+// 		contentType: "application/x-www-form-urlencoded",
+// 		data:json,
+		contentType: "application/json",
+		data:JSON.stringify(json),
+// 		contentType: "multipart/form-data",
+		dataType:'json', // 返回值类型
+		success:function(data){
+			$('#articleForm').bootstrapValidator('disableSubmitButtons', false);
+			if(data.success){
+				$('#fail-modal-content').css("width","200px");
+				$('#tip_success').modal('show');
+				setTimeout(function() {
+					$("#tip_success").modal("hide");
+				}, 1200);
+			}else{
+				$('#fail-modal-content').css("width","500px");
+				$('#tip_failed').modal('show');
+				var msg = '<i class="fa fa-check-circle text-danger mr-1" aria-hidden="true"></i>';
+				if(typeof data.message === 'string'  &&  data.message.length  >  0){
+					$("#tip_failed_message").html(msg+data.message);
+				}else{
+					$("#tip_failed_message").html(msg+"服务器内部错误");
+				}
+				if(typeof data.stackTrace === 'string'  &&  data.stackTrace.length  >  0){
+					$("#tip_failed_dev_div").show();
+					$("#tip_failed_trace").html('<div class="well">'+data.stackTrace+'</div>');
+				}else{
+					$("#tip_failed_dev_div").hide();
+				}
+			}
+		},
+		error: function (jqXHR, textStatus, errorThrown) {
+			$('#articleForm').bootstrapValidator('disableSubmitButtons', false);
+			$('#fail-modal-content').css("width","200px");
+			$('#tip_failed').modal('show');
+			if (jqXHR.status == 404){
+				$("#tip_failed_message").html('<i class="fa fa-check-circle text-danger mr-1" aria-hidden="true"></i>找不到资源');
+				$("#tip_failed_dev_div").hide();
+			}
+			console.log("jqXHR={\n"+jqXHR.status+",\n"+jqXHR.statusText+",\n"+jqXHR.responseText
+					+"},\ntextStatus="+textStatus+",\nerrorThrown="+errorThrown);
+		}
+	});
+}
+
+
 $(function() {
 	
 	if(articleType == "add"){
@@ -133,12 +197,11 @@ $(function() {
 	}else if(articleType == "update"){
 		$("title").html("修改博客文章");
 		// 获取文章数据 TODO
+		ue.ready(function () {
+			ue.setContent("开始修改文章了哟");
+		});
 	}
 	
-	ue.ready(function () {
-		ue.setContent("开始修改文章了哟");
-	});
-				
 	$("#btn_clear").click(function(e){
 		ue.setContent('');
 	});
@@ -148,7 +211,19 @@ $(function() {
 		$('#articleForm').bootstrapValidator('disableSubmitButtons', false);
 	});
 	$("#btn_submit").click(function(){
-		
+		var bootstrapValidator = $("#articleForm").data('bootstrapValidator');
+		bootstrapValidator.validate();
+		if(bootstrapValidator.isValid()){
+			var content=ue.getContent().trim();
+			if (content.length==0){
+				$("#contentErrorInfo").text("文章内容不能为空");
+				ue.focus(true);
+				return;
+			}
+			articleSubmit();
+		} else{
+			return;
+		}
 	});
 	
 	$('#articleForm').bootstrapValidator();
