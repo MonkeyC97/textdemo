@@ -23,7 +23,7 @@ public class DbUtil {
     public  static DataSource getDataSource(){
         if(DATASOURCE == null){
             synchronized (DataSource.class){
-                if(DATASOURCE == null){//指令重排序，可能还没有把对象赋给引用，所以可能下一个线程过来的时候引用没有指向对象
+                if(DATASOURCE == null){                //指令重排序，可能还没有把对象赋给引用，所以可能下一个线程过来的时候引用没有指向对象
                     DATASOURCE = new MysqlDataSource();//非原子性，3步：1开辟空间，2产生对象，3赋给引用
                     ((MysqlDataSource) DATASOURCE).setUrl(URL);
                     ((MysqlDataSource) DATASOURCE).setUser(USER_NAME);

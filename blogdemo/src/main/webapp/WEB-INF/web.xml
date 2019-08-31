@@ -23,15 +23,15 @@
         <url-pattern>/articleAdd</url-pattern>
     </servlet-mapping>
 
-    <servlet>
-        <servlet-name>articleUpdate</servlet-name>
-        <servlet-class>com.monkeyc.blog.Servlet.ArticleUpdateServlet</servlet-class>
-    </servlet>
+<!--    <servlet>-->
+<!--        <servlet-name>articleUpdate</servlet-name>-->
+<!--        <servlet-class>com.monkeyc.blog.Servlet.ArticleUpdateServlet</servlet-class>-->
+<!--    </servlet>-->
 
-    <servlet-mapping>
-        <servlet-name>articleUpdate</servlet-name>
-        <url-pattern>/articleUpdate</url-pattern>
-    </servlet-mapping>
+<!--    <servlet-mapping>-->
+<!--        <servlet-name>articleUpdate</servlet-name>-->
+<!--        <url-pattern>/articleUpdate</url-pattern>-->
+<!--    </servlet-mapping>-->
 
 
 </web-app>

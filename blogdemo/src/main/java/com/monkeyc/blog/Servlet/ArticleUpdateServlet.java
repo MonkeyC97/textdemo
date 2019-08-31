@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+@WebServlet("/articleUpdate")
 public class ArticleUpdateServlet extends BaseServlet {
     @Override
     public Object process(HttpServletRequest request, HttpServletResponse response) throws Exception{
@@ -19,7 +20,6 @@ public class ArticleUpdateServlet extends BaseServlet {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         Article article = JSONUtil.get(request,Article.class);
-
         //处理数据库操作
         try{
             connection = DbUtil.getConnection();
