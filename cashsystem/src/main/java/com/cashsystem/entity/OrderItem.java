@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 public class OrderItem {
+
     private Integer id;
     private String orderId;
     private Integer goodsId;
@@ -14,4 +15,5 @@ public class OrderItem {
     private String goodsUnit;
     private Integer goodsPrice;
     private Integer goodsDiscount;
+
 }

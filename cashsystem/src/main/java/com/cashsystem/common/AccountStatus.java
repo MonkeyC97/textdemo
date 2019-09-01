@@ -3,6 +3,9 @@ package com.cashsystem.common;
 import lombok.Getter;
 import lombok.ToString;
 
+/**
+ * 账户状态
+ */
 @Getter
 @ToString
 public enum  AccountStatus {
@@ -21,6 +24,6 @@ public enum  AccountStatus {
                 return accountStatus;
             }
         }
-        throw  new RuntimeException("accountStatus flag"+flag+"not fount");
+        throw  new RuntimeException("accountStatus flag"+flag+"not found");
     }
 }

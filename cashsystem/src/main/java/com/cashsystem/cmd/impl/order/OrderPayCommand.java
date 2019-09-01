@@ -34,6 +34,10 @@ public class OrderPayCommand extends AbstractCommand {
             //[0] = "1" [1] = "8"
             String[] str = goodsString.split("-");
             Goods goods = this.goodsService.getGoods(Integer.parseInt(str[0]));
+            if(goods == null){
+                System.out.println("商品不存在");
+                return;
+            }
             goods.setBuyGoodsNum(Integer.parseInt(str[1]));
             goodsList.add(goods);
         }

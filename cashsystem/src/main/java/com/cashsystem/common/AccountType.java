@@ -5,6 +5,9 @@ import lombok.ToString;
 
 @Getter
 @ToString
+/**
+ * 用户类型
+ */
 public enum AccountType {
 
     ADMIN(1,"管理员"),CUSTOMER(2,"客户");

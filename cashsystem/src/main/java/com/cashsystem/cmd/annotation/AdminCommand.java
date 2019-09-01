@@ -11,3 +11,4 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)//说明了Annotation所修饰的对象范围：用于描述类、接口（包括注解类型）或枚举
 public @interface AdminCommand {
 }
+

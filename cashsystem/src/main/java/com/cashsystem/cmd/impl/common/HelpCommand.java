@@ -49,7 +49,6 @@ public class HelpCommand extends AbstractCommand {
     //Map.values()返回所有value的集合
     public void entranceHelp(){
         print("欢迎", Commands.ENTRANCE_COMMANDS.values());
-
     }
     public void print(String title, Collection<Command> collection){
         System.out.println("*********"+title+"*********");

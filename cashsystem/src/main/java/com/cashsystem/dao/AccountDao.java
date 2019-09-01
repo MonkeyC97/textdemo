@@ -5,7 +5,10 @@ import com.cashsystem.common.AccountType;
 import com.cashsystem.entity.Account;
 import org.apache.commons.codec.digest.DigestUtils;
 
+import javax.xml.transform.Result;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AccountDao extends BaseDao{
     //操作数据库
@@ -41,7 +44,7 @@ public class AccountDao extends BaseDao{
         return account;
     }
 
-    private static Account extractAccount(ResultSet resultSet){
+    private  Account extractAccount(ResultSet resultSet){
         Account account = new Account();
         try {
             account.setId(resultSet.getInt("id"));
@@ -63,6 +66,7 @@ public class AccountDao extends BaseDao{
         PreparedStatement preparedStatement = null;//预处理SQL命令
         ResultSet resultSet = null;
         boolean effect = false;
+
         try{
             connection = this.getConnection(true);
             String sql = "insert into account(username,password,name," +
@@ -89,5 +93,116 @@ public class AccountDao extends BaseDao{
             this.closeResource(resultSet,preparedStatement,connection);
         }
         return effect;
+    }
+    //浏览账户
+    public List<Account> queryAllAccount(){
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        List<Account> list = new ArrayList<>();
+        try{
+            connection = this.getConnection(true);
+            String sql = "select * from account";
+            preparedStatement = connection.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                Account account = this.extractAccount(resultSet);
+                list.add(account);
+            }
+            return list;
+        }catch (Exception e){
+            e.printStackTrace();
+
+        }finally {
+            this.closeResource(resultSet,preparedStatement,connection);
+        }
+        return null;
+    }
+
+    //重置密码
+    public boolean updatePassword(String password,Account account){
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try{
+            connection = this.getConnection(true);
+            String sql = "update account set password=? where id=?";
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1,DigestUtils.md5Hex(password));
+            preparedStatement.setInt(2,account.getId());
+            return preparedStatement.executeUpdate()==1;
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            this.closeResource(resultSet,preparedStatement,connection);
+        }
+        return false;
+    }
+
+    //输入原密码
+    public Account getAccountByPassword(String password){
+        Account account = null;
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try{
+            connection = this.getConnection(true);
+            String sql = "select * from account where password=?";
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1,DigestUtils.md5Hex(password));
+            resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                account = this.extractAccount(resultSet);
+            }
+            return account;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            this.closeResource(resultSet,preparedStatement,connection);
+        }
+        return null;
+    }
+    //根据id得到Account
+    public Account getAccountById(int id){
+        Account account = null;
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try{
+            connection = this.getConnection(true);
+            String sql = "select * from account where id=?";
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1,id);
+            resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                account = this.extractAccount(resultSet);
+                return account;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            this.closeResource(resultSet,preparedStatement,connection);
+        }
+        return null;
+    }
+
+    public boolean updateAccount(Account account){
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try{
+            connection = this.getConnection(true);
+            String sql ="update account set account_type=?,account_status=? where id=?";
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1,account.getAccountType().getFlag());
+            preparedStatement.setInt(2,account.getAccountStatus().getFlag());
+            preparedStatement.setInt(3,account.getId());
+            return preparedStatement.executeUpdate()==1;
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            this.closeResource(resultSet,preparedStatement,connection);
+        }
+        return false;
     }
 }
