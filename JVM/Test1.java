@@ -7,7 +7,6 @@ public class Test1 {
 
     }
     public static void main(String[] args) {
-        ArrayList<OOMObject> arrayList = new ArrayList<>();
-
+        System.out.println(Runtime.getRuntime().maxMemory() /1024/1024);
     }
 }

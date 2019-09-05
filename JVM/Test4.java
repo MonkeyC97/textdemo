@@ -30,7 +30,7 @@ public class Test4 {
         System.gc();
         Thread.sleep(500);
         if(test != null){
-            test.isAlive();
+                test.isAlive();
         }else{
             System.out.println("Oh no I am dead");
         }
